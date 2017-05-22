@@ -6,12 +6,15 @@ using System.Threading.Tasks;
 
 namespace AnimChainsGenerator
 {
-    public struct AnimDef
+    public class AnimDef
     {
-        public ushort CellXstartIndex;
-        public ushort CellYstartIndex;
-        public ushort FramesPerRotation;
-        public string AnimName;
+        public ushort CellXstartIndex { get; set; }
+        public ushort CellYstartIndex { get; set; }
+        public ushort FramesPerRotation { get; set; }
+        public string AnimName { get; set; }
+
+        public AnimDef()
+        { }
 
         public AnimDef(ushort cellXstartIndex, ushort cellYstartIndex, ushort framesPerRotation, string animName = null)
         {

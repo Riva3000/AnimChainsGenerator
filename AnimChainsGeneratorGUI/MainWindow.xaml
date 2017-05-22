@@ -3,10 +3,115 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:AnimChainsGenerator"
-        mc:Ignorable="d"
-        Title="AnimChains Generator for FlatRedBall" Height="350" Width="525">
-    <Grid>
         
-    </Grid>
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" 
+        xmlns:sys="clr-namespace:System;assembly=mscorlib" 
+        
+        xmlns:local="clr-namespace:AnimChainsGenerator"
+        
+        mc:Ignorable="d"
+        
+        Title="AnimChains Generator for FlatRedBall" MinWidth="525" MaxWidth="525" Width="525" Height="700" Background="DimGray" >
+    <DockPanel >
+        <Grid DockPanel.Dock="Top" Margin="6" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition />
+                <ColumnDefinition Width="20" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="20" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="20" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="Auto"/>
+                
+                <RowDefinition Height="Auto" />
+                
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="SpriteSheet cell size" />
+            <xctk:IntegerUpDown Grid.Column="2" Minimum="1" Value="{Binding SheetCellSize.Width}" />
+            <xctk:IntegerUpDown Grid.Column="4" Minimum="1" Value="{Binding SheetCellSize.Height}" />
+
+            <TextBlock Grid.Row="2" Text="Number of rotations" />
+            <xctk:IntegerUpDown Grid.Row="2" Grid.Column="2" Minimum="1" Value="{Binding Rotations}" />
+
+            <TextBlock Grid.Row="4" Text="SpriteSheet image" />
+            <TextBox Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="99" MaxLines="1" Text="{Binding SheetFilePath}" />
+
+            <TextBlock Grid.Row="6" Text="Output achx" />
+            <TextBox Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="99" MaxLines="1" Text="{Binding OutputAchxFilePath}" />
+
+            <Button Grid.Row="7" Grid.ColumnSpan="99" Content="Generate achx" Margin="20" Padding="20,6" HorizontalAlignment="Center" 
+                    Click="ButGenerate_Click" />
+
+            <TextBlock Grid.Row="8" Text="Animation definitions" VerticalAlignment="Bottom" />
+            <Button Grid.Row="8" Grid.Column="4" Content="Add definition" HorizontalAlignment="Right"
+                    Click="ButAddAnimDef_Click" />
+        </Grid>
+
+        <!--<Button DockPanel.Dock="Top" Content="Add Anim definition" HorizontalAlignment="Right" Margin="0,-15,6,0" />-->
+
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
+                      Background="{StaticResource PitchGray}" >
+
+            <ItemsControl ItemsSource="{Binding AnimDefinitons}" >
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="{StaticResource BGBlueish}" Margin="2" >
+                            <Grid MinHeight="32" Margin="6,10" >
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition />
+
+                                    <ColumnDefinition Width="10" />
+
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="10" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Text="Starts at horizontal cell" />
+                                <xctk:IntegerUpDown Grid.Column="2" Minimum="0" Value="{Binding CellXstartIndex}" />
+
+                                <TextBlock Grid.Column="4" Text="vertical cell" />
+                                <xctk:IntegerUpDown Grid.Column="6" Minimum="0" Value="{Binding CellYstartIndex}" />
+
+                                <TextBlock Grid.Column="8" Text="No of frames" />
+                                <xctk:IntegerUpDown Grid.Column="10" Minimum="1" Value="{Binding FramesPerRotation}" />
+
+                                <TextBlock Grid.Row="2" Text="Anim name" />
+                                <TextBox Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="9" MaxLines="1" Text="{Binding AnimName}" />
+
+                                <Button Grid.Column="12" Grid.RowSpan="3" Content="X" Padding="6" 
+                                        Tag="{Binding}"
+                                        Click="ButRemoveAnimDef_Click" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+
+            </ItemsControl>
+
+        </ScrollViewer>
+
+    </DockPanel>
 </Window>
