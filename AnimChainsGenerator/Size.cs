@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace AnimChainsGenerator
 {
-    public class Class1
+    public struct Size
     {
+        public uint Width;
+        public uint Height;
     }
 }
