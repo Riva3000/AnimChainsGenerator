@@ -62,6 +62,7 @@ namespace AnimChainsGenerator
                 currentYTop = yStart + iRotation * _FrameSize.Height;
                 currentYBottom = currentYTop + _FrameSize.Height;
                 oneRotAnim = new AnimationChainSave(); // animDef.FramesPerRotation
+                oneRotAnim.Name = animDef.AnimName + '_' + iRotation.ToString();
 
                 for (ushort iFrame = 0; iFrame < animDef.FramesPerRotation; iFrame++)
                 {

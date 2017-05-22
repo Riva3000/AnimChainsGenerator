@@ -11,5 +11,14 @@ namespace AnimChainsGenerator
         public ushort CellXstartIndex;
         public ushort CellYstartIndex;
         public ushort FramesPerRotation;
+        public string AnimName;
+
+        public AnimDef(ushort cellXstartIndex, ushort cellYstartIndex, ushort framesPerRotation, string animName = null)
+        {
+            CellXstartIndex = cellXstartIndex;
+            CellYstartIndex = cellYstartIndex;
+            FramesPerRotation = framesPerRotation;
+            AnimName = animName;
+        }
     }
 }
