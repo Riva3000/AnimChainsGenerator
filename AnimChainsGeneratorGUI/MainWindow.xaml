@@ -13,7 +13,7 @@
         
         Title="AnimChains Generator for FlatRedBall" 
         Width="{DynamicResource fixedWidth}" MinWidth="{DynamicResource fixedWidth}" MaxWidth="{DynamicResource fixedWidth}" 
-        Height="700" Background="DimGray" >
+        Height="700" Background="DimGray" Icon="Icon.ico" >
     <Window.Resources>
         <sys:Double x:Key="fixedWidth">550</sys:Double>
     </Window.Resources>
