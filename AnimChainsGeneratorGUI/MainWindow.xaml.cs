@@ -44,7 +44,7 @@ namespace AnimChainsGenerator
         #endregion --- INotifyPropertyChanged implementation END
 
 
-        private Size _SheetCellSize = new Size();
+        private Size _SheetCellSize = new Size { Width = 32, Height = 32 };
         public Size SheetCellSize
         {
             get { return _SheetCellSize; }
@@ -176,7 +176,15 @@ namespace AnimChainsGenerator
                 return;
             }
 
-
+            var zeroIndexedAnimDefinitons = new AnimDef[_AnimDefinitons.Count];
+            AnimDef animDefClone;
+            for (int i = 0; i < zeroIndexedAnimDefinitons.Length; i++)
+            {
+                animDefClone = AnimDef.Clone(_AnimDefinitons[i]);
+                animDefClone.CellXstartIndex -= 1;
+                animDefClone.CellYstartIndex -= 1;
+                zeroIndexedAnimDefinitons[i] = animDefClone;
+            }
 
             var animChainList = Generator.Generate(
                     _SheetCellSize,

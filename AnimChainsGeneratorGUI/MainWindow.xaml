@@ -11,7 +11,12 @@
         
         mc:Ignorable="d"
         
-        Title="AnimChains Generator for FlatRedBall" MinWidth="525" MaxWidth="525" Width="525" Height="700" Background="DimGray" >
+        Title="AnimChains Generator for FlatRedBall" 
+        Width="{DynamicResource fixedWidth}" MinWidth="{DynamicResource fixedWidth}" MaxWidth="{DynamicResource fixedWidth}" 
+        Height="700" Background="DimGray" >
+    <Window.Resources>
+        <sys:Double x:Key="fixedWidth">550</sys:Double>
+    </Window.Resources>
     <DockPanel >
         <Grid DockPanel.Dock="Top" Margin="6" >
             <Grid.ColumnDefinitions>
@@ -91,10 +96,10 @@
                                 </Grid.RowDefinitions>
 
                                 <TextBlock Text="Starts at horizontal cell" />
-                                <xctk:IntegerUpDown Grid.Column="2" Minimum="0" Value="{Binding CellXstartIndex}" />
+                                <xctk:IntegerUpDown Grid.Column="2" Minimum="1" Value="{Binding CellXstartIndex}" />
 
                                 <TextBlock Grid.Column="4" Text="vertical cell" />
-                                <xctk:IntegerUpDown Grid.Column="6" Minimum="0" Value="{Binding CellYstartIndex}" />
+                                <xctk:IntegerUpDown Grid.Column="6" Minimum="1" Value="{Binding CellYstartIndex}" />
 
                                 <TextBlock Grid.Column="8" Text="No of frames" />
                                 <xctk:IntegerUpDown Grid.Column="10" Minimum="1" Value="{Binding FramesPerRotation}" />

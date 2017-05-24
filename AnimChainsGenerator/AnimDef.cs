@@ -2,9 +2,9 @@
 {
     public class AnimDef
     {
-        public ushort CellXstartIndex { get; set; }
-        public ushort CellYstartIndex { get; set; }
-        public ushort FramesPerRotation { get; set; }
+        public ushort CellXstartIndex { get; set; } = 1;
+        public ushort CellYstartIndex { get; set; } = 1;
+        public ushort FramesPerRotation { get; set; } = 1;
         public string AnimName { get; set; }
 
         public AnimDef()
@@ -16,6 +16,11 @@
             CellYstartIndex = cellYstartIndex;
             FramesPerRotation = framesPerRotation;
             AnimName = animName;
+        }
+
+        public static AnimDef Clone(AnimDef animDef)
+        {
+            return new AnimDef(animDef.CellXstartIndex, animDef.CellYstartIndex, animDef.FramesPerRotation, animDef.AnimName);
         }
     }
 }
