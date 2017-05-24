@@ -2,8 +2,8 @@
 {
     public class AnimDef
     {
-        public ushort CellXstartIndex { get; set; } = 1;
-        public ushort CellYstartIndex { get; set; } = 1;
+        public ushort CellXstartIndex { get; set; }
+        public ushort CellYstartIndex { get; set; }
         public ushort FramesPerRotation { get; set; } = 1;
         public string AnimName { get; set; }
 
