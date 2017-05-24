@@ -65,7 +65,7 @@ namespace AnimChainsGenerator
             set { SetField(ref _OutputAchxFilePath, value, "OutputAchxFilePath"); }
         }
 
-        private ushort _Rotations;
+        private ushort _Rotations = 1;
         public ushort Rotations
         {
             get { return _Rotations; }
@@ -192,6 +192,11 @@ namespace AnimChainsGenerator
             );
 
             MessageBox.Show("Achx generation successful");
+
+            if (CheckBoxOpenAchx.IsChecked.Value)
+            {
+                System.Diagnostics.Process.Start("_OutputAchxFilePath");
+            }
         }
     }
 }

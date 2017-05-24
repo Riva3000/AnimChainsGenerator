@@ -48,8 +48,9 @@
             <TextBlock Grid.Row="6" Text="Output achx" />
             <TextBox Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="99" MaxLines="1" Text="{Binding OutputAchxFilePath}" />
 
-            <Button Grid.Row="7" Grid.ColumnSpan="99" Content="Generate achx" Margin="20" Padding="20,6" HorizontalAlignment="Center" 
+            <Button Grid.Row="7" Grid.ColumnSpan="3" Content="Generate achx" Margin="20" Padding="20,6" HorizontalAlignment="Center" 
                     Click="ButGenerate_Click" />
+            <CheckBox Name="CheckBoxOpenAchx" Grid.Row="7" Grid.Column="4" Content="Open created achx" VerticalAlignment="Center" />
 
             <TextBlock Grid.Row="8" Text="Animation definitions" VerticalAlignment="Bottom" />
             <Button Grid.Row="8" Grid.Column="4" Content="Add definition" HorizontalAlignment="Right"
