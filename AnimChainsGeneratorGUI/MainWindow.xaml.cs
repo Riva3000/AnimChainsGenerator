@@ -15,6 +15,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 //using System.Windows.Shapes;
 using System.IO;
+using Microsoft.Win32;
+using System.Xml.Serialization;
 
 namespace AnimChainsGenerator
 {
@@ -43,37 +45,13 @@ namespace AnimChainsGenerator
         }
         #endregion --- INotifyPropertyChanged implementation END
 
-
-        private Size _SheetCellSize = new Size { Width = 32, Height = 32 };
-        public Size SheetCellSize
+        private Project _Project = new Project();
+        public Project Project
         {
-            get { return _SheetCellSize; }
-            set { SetField(ref _SheetCellSize, value, "SheetCellSize"); }
+            get { return _Project; }
+            set { SetField(ref _Project, value, "Project"); }
         }
-
-        private string _SheetFilePath;
-        public string SheetFilePath
-        {
-            get { return _SheetFilePath; }
-            set { SetField(ref _SheetFilePath, value, "SheetFileName"); }
-        }
-
-        private string _OutputAchxFilePath;
-        public string OutputAchxFilePath
-        {
-            get { return _OutputAchxFilePath; }
-            set { SetField(ref _OutputAchxFilePath, value, "OutputAchxFilePath"); }
-        }
-
-        private ushort _Rotations = 1;
-        public ushort Rotations
-        {
-            get { return _Rotations; }
-            set { SetField(ref _Rotations, value, "Rotations"); }
-        }
-
-        private ObservableCollection<AnimDef> _AnimDefinitons = new ObservableCollection<AnimDef>();
-        public ObservableCollection<AnimDef> AnimDefinitons { get { return _AnimDefinitons; } }
+        
 
 
 
@@ -83,7 +61,7 @@ namespace AnimChainsGenerator
         {
             //ContentRendered += This_ContentRendered;
 
-            DataContext = this;
+            DataContext = Project;
 
             InitializeComponent();
         }
@@ -112,7 +90,7 @@ namespace AnimChainsGenerator
         private bool DuplicateAnimDefs()
         {
             var hashSet = new HashSet<string>();
-            foreach(var animDef in _AnimDefinitons)
+            foreach(var animDef in _Project.AnimDefinitons)
             {
                 if(! hashSet.Add( animDef.AnimName ) )
                 {
@@ -125,43 +103,44 @@ namespace AnimChainsGenerator
 
         private void ButAddAnimDef_Click(object sender, RoutedEventArgs e)
         {
-            _AnimDefinitons.Add( new AnimDef { CellXstartIndex = 1, CellYstartIndex = 1 } );
+            _Project.AnimDefinitons.Add( new AnimDef { CellXstartIndex = 1, CellYstartIndex = 1 } );
         }
 
         private void ButRemoveAnimDef_Click(object sender, RoutedEventArgs e)
         {
-            _AnimDefinitons.Remove(
+            _Project.AnimDefinitons.Remove(
                 (AnimDef)(sender as Button).Tag
             );
         }
 
         private void ButGenerate_Click(object sender, RoutedEventArgs e)
         {
-            if (_AnimDefinitons.Count == 0)
+            #region    -- Error checking
+            if (_Project.AnimDefinitons.Count == 0)
             {
                 MessageBox.Show("Not Anims defined.");
                 return;
             }
 
-            if (_SheetFilePath == null)
+            if (_Project.SheetFilePath == null)
             {
                 MessageBox.Show("Enter SpriteSheet image file.");
                 return;
             }
 
-            if (!File.Exists(_SheetFilePath))
+            if (!File.Exists(_Project.SheetFilePath))
             {
                 MessageBox.Show("SpriteSheet image file not found.");
                 return;
             }
 
-            if (_OutputAchxFilePath == null)
+            if (_Project.OutputAchxFilePath == null)
             {
                 MessageBox.Show("Enter Achx output directory.");
                 return;
             }
 
-            string achxOutputDir = Path.GetDirectoryName(_OutputAchxFilePath);
+            string achxOutputDir = Path.GetDirectoryName(_Project.OutputAchxFilePath);
 
             if (!Directory.Exists(achxOutputDir))
             {
@@ -175,34 +154,61 @@ namespace AnimChainsGenerator
                 MessageBox.Show("Two animations can't have a same name.");
                 return;
             }
+            #endregion -- Error checking END
 
-            var zeroIndexedAnimDefinitons = new AnimDef[_AnimDefinitons.Count];
+            string achxOutputFileNameWOExt = Path.GetFileNameWithoutExtension(_Project.OutputAchxFilePath);
+
+            // Save project
+            if (CheckBoxSaveProject.IsChecked.Value)
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(Project));
+                using (TextWriter writer = new StreamWriter(Path.Combine(achxOutputDir, achxOutputFileNameWOExt + ".achpx")))
+                {
+                    serializer.Serialize(
+                        writer,
+                        _Project
+                    );
+                }
+            }
+
+            // Remove whitespace
+            // Convert AnimDefs to zero based indexing
+            var zeroIndexedAnimDefinitons = new AnimDef[_Project.AnimDefinitons.Count];
             AnimDef animDefClone;
             for (int i = 0; i < zeroIndexedAnimDefinitons.Length; i++)
             {
-                if (String.IsNullOrWhiteSpace(_AnimDefinitons[i].AnimName))
+                // AnimNames error check
+                if (String.IsNullOrWhiteSpace(_Project.AnimDefinitons[i].AnimName))
                 {
                     MessageBox.Show("All animations must have name defined.\nName can't be all whitespaces.");
                     return;
                 }
 
-                animDefClone = AnimDef.Clone(_AnimDefinitons[i]);
+                // Remove whitespace
+                _Project.AnimDefinitons[i].AnimName = _Project.AnimDefinitons[i].AnimName.Trim();
+
+                // Convert AnimDefs to zero based indexing
+                animDefClone = AnimDef.Clone(_Project.AnimDefinitons[i]);
                 animDefClone.CellXstartIndex -= 1;
                 animDefClone.CellYstartIndex -= 1;
                 zeroIndexedAnimDefinitons[i] = animDefClone;
             }
 
+            // Create data
             var animChainList = Generator.Generate(
                     // sheet cell size
-                    _SheetCellSize,
+                    _Project.SheetCellSize,
                     // sheet file name only (wo path)
-                    Path.GetFileName(_SheetFilePath),
+                    Path.GetFileName(_Project.SheetFilePath),
                     // 
-                    _Rotations,
+                    _Project.Rotations,
+                    //
+                    new Offset<float> { X = (float)_Project.FramesOffset.X, Y = (float)_Project.FramesOffset.Y },
                     // 
                     zeroIndexedAnimDefinitons
                 );
 
+            // Save achx
             Generator.SaveAchx(
                 // AnimChainListSave generated by Generator.Generate()
                 animChainList,
@@ -210,16 +216,45 @@ namespace AnimChainsGenerator
                 // output path
                 achxOutputDir,
                 // output file name wo extension 
-                Path.GetFileNameWithoutExtension(_OutputAchxFilePath),
+                achxOutputFileNameWOExt,
                 // path to sprite sheet 
-                Path.GetDirectoryName(_SheetFilePath)
+                Path.GetDirectoryName(_Project.SheetFilePath)
             );
 
             MessageBox.Show("Achx generation successful");
 
+            // Run achx
             if (CheckBoxOpenAchx.IsChecked.Value)
             {
-                System.Diagnostics.Process.Start(_OutputAchxFilePath);
+                System.Diagnostics.Process.Start(
+                    Path.Combine(achxOutputDir, achxOutputFileNameWOExt + ".achx")
+                );
+            }
+        }
+
+        private void ButLoadProjectFile_Click(object sender, RoutedEventArgs e)
+        {
+            //OpenFileDialog SaveFileDialog
+            var dialog = new OpenFileDialog
+            {
+                DereferenceLinks = true, // default is false
+                CheckFileExists = true,
+                CheckPathExists = true,
+                Title = "Open project file",
+                Filter = "AnimChainsGenerator project (*.achpx)|*.achpx",
+            };
+                
+            var dialogResult = dialog.ShowDialog();
+
+            if (dialogResult.HasValue && dialogResult.Value)
+            //&& !String.IsNullOrWhiteSpace(dialog.FileName))
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(Project));
+
+                using (var stream = File.OpenRead(dialog.FileName))
+                {
+                    Project = serializer.Deserialize(stream) as Project;
+                }
             }
         }
     }

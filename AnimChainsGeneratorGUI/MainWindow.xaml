@@ -27,6 +27,8 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="20"/>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="20" />
                 <RowDefinition Height="Auto" />
@@ -34,31 +36,52 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="20"/>
                 <RowDefinition Height="Auto"/>
-                
-                <RowDefinition Height="Auto" />
-                
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="Auto"/>
+
+                <RowDefinition Height="36" />
+                <RowDefinition Height="36"/>
+
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <TextBlock Text="SpriteSheet cell size" />
-            <xctk:IntegerUpDown Grid.Column="2" Minimum="1" Value="{Binding SheetCellSize.Width}" />
-            <xctk:IntegerUpDown Grid.Column="4" Minimum="1" Value="{Binding SheetCellSize.Height}" />
+            <Button Content="Load project file" Click="ButLoadProjectFile_Click" />
 
-            <TextBlock Grid.Row="2" Text="Number of rotations" />
-            <xctk:IntegerUpDown Grid.Row="2" Grid.Column="2" Minimum="1" Value="{Binding Rotations}" />
+            <TextBlock Text="SpriteSheet cell size" Grid.Row="2" />
+            <xctk:IntegerUpDown Grid.Column="2" 
+                Minimum="1" 
+                Value="{Binding SheetCellSize.Width}" DefaultValue="{Binding SheetCellSize.Width, Mode=OneTime}" DisplayDefaultValueOnEmptyText="True" Grid.Row="2" />
+            <xctk:IntegerUpDown Grid.Column="4" 
+                Minimum="1" 
+                Value="{Binding SheetCellSize.Height}" DefaultValue="{Binding SheetCellSize.Height, Mode=OneTime}"  DisplayDefaultValueOnEmptyText="True" Grid.Row="2" />
 
-            <TextBlock Grid.Row="4" Text="SpriteSheet image" />
-            <TextBox Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="99" MaxLines="1" Text="{Binding SheetFilePath}" />
+            <TextBlock Grid.Row="4" Text="Number of rotations" />
+            <xctk:IntegerUpDown Grid.Row="4" Grid.Column="2" Minimum="1" Value="{Binding Rotations}" />
 
-            <TextBlock Grid.Row="6" Text="Output achx" />
-            <TextBox Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="99" MaxLines="1" Text="{Binding OutputAchxFilePath}" />
+            <TextBlock Grid.Row="6" Text="SpriteSheet image" />
+            <TextBox Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="3" MaxLines="1" Text="{Binding SheetFilePath}" />
 
-            <Button Grid.Row="7" Grid.ColumnSpan="3" Content="Generate achx" Margin="20" Padding="20,6" HorizontalAlignment="Center" 
-                    Click="ButGenerate_Click" />
-            <CheckBox Name="CheckBoxOpenAchx" Grid.Row="7" Grid.Column="4" Content="Open created achx" VerticalAlignment="Center" />
+            <TextBlock Grid.Row="8" Text="Output achx" />
+            <TextBox Grid.Row="8" Grid.Column="2" Grid.ColumnSpan="3" MaxLines="1" Text="{Binding OutputAchxFilePath}" />
 
-            <TextBlock Grid.Row="8" Text="Animation definitions" VerticalAlignment="Bottom" />
-            <Button Grid.Row="8" Grid.Column="4" Content="Add definition" HorizontalAlignment="Right"
+            <TextBlock Grid.Row="10">
+                Add Relative position<LineBreak />
+                for all anims frames
+            </TextBlock>
+            <xctk:DoubleUpDown Grid.Row="10" Grid.Column="2" VerticalAlignment="Top"
+                                Minimum="0" 
+                Value="{Binding FramesOffset.X}" DefaultValue="{Binding FramesOffset.X, Mode=OneTime}" DisplayDefaultValueOnEmptyText="True" />
+            <xctk:DoubleUpDown Grid.Row="10" Grid.Column="4" VerticalAlignment="Top"
+                                Minimum="0" 
+                Value="{Binding FramesOffset.Y}" DefaultValue="{Binding FramesOffset.Y, Mode=OneTime}" DisplayDefaultValueOnEmptyText="True" />
+
+            <Button Grid.Row="11" Grid.ColumnSpan="3" Content="Generate achx" Margin="102,20" Padding="20,6" HorizontalAlignment="Center" 
+                    Click="ButGenerate_Click" Grid.RowSpan="2" />
+            <CheckBox Name="CheckBoxOpenAchx" Grid.Row="11" Grid.Column="4" Content="Open created achx" VerticalAlignment="Center" />
+            <CheckBox Name="CheckBoxSaveProject" Grid.Row="12" Grid.Column="4" Content="Save project file" VerticalAlignment="Center" />
+
+            <TextBlock Grid.Row="13" Text="Animation definitions" VerticalAlignment="Bottom" />
+            <Button Grid.Row="13" Grid.Column="4" Content="Add definition" HorizontalAlignment="Right"
                     Click="ButAddAnimDef_Click" />
         </Grid>
 
