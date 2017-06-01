@@ -9,6 +9,7 @@ namespace AnimChainsGenerator
         private static Size _FrameSize;
         private static string _SpriteSheetFileName;
         private static ushort _Rotations;
+        private static Offset<float> _AllFramesOffset;
 
         /// <summary>Generates AnimationChainListSave data structure based on input data.</summary>
         /// <param name="frameSize">Size of one sprite sheet cell. All cells in spritesheed have to have uniform size.</param>
@@ -20,12 +21,14 @@ namespace AnimChainsGenerator
             Size frameSize,
             string spriteSheetFileName,
             ushort rotations,
+            Offset<float> allFramesOffset,
             IEnumerable<AnimDef> animsDefinitions
         )
         {
             _FrameSize = frameSize;
             _SpriteSheetFileName = spriteSheetFileName;
             _Rotations = rotations;
+            _AllFramesOffset = allFramesOffset;
 
             AnimationChainListSave animChainListSave = new AnimationChainListSave
             {
@@ -77,6 +80,8 @@ namespace AnimChainsGenerator
                         BottomCoordinate = currentYBottom,
                         LeftCoordinate = left,
                         RightCoordinate = left + _FrameSize.Width,
+                        RelativeX = _AllFramesOffset.X,
+                        RelativeY = _AllFramesOffset.Y,
                         FrameLength = 0.1f
                     };
 
