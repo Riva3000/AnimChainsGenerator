@@ -61,7 +61,7 @@ namespace AnimChainsGenerator
         {
             //ContentRendered += This_ContentRendered;
 
-            DataContext = Project;
+            DataContext = this;
 
             InitializeComponent();
         }
@@ -100,6 +100,32 @@ namespace AnimChainsGenerator
             return false;
         }
 
+
+        private void ButLoadProjectFile_Click(object sender, RoutedEventArgs e)
+        {
+            //OpenFileDialog SaveFileDialog
+            var dialog = new OpenFileDialog
+            {
+                DereferenceLinks = true, // default is false
+                CheckFileExists = true,
+                CheckPathExists = true,
+                Title = "Open project file",
+                Filter = "AnimChainsGenerator project (*.achpx)|*.achpx",
+            };
+                
+            var dialogResult = dialog.ShowDialog();
+
+            if (dialogResult.HasValue && dialogResult.Value)
+            //&& !String.IsNullOrWhiteSpace(dialog.FileName))
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(Project));
+
+                using (var stream = File.OpenRead(dialog.FileName))
+                {
+                    Project = serializer.Deserialize(stream) as Project;
+                }
+            }
+        }
 
         private void ButAddAnimDef_Click(object sender, RoutedEventArgs e)
         {
@@ -232,30 +258,5 @@ namespace AnimChainsGenerator
             }
         }
 
-        private void ButLoadProjectFile_Click(object sender, RoutedEventArgs e)
-        {
-            //OpenFileDialog SaveFileDialog
-            var dialog = new OpenFileDialog
-            {
-                DereferenceLinks = true, // default is false
-                CheckFileExists = true,
-                CheckPathExists = true,
-                Title = "Open project file",
-                Filter = "AnimChainsGenerator project (*.achpx)|*.achpx",
-            };
-                
-            var dialogResult = dialog.ShowDialog();
-
-            if (dialogResult.HasValue && dialogResult.Value)
-            //&& !String.IsNullOrWhiteSpace(dialog.FileName))
-            {
-                XmlSerializer serializer = new XmlSerializer(typeof(Project));
-
-                using (var stream = File.OpenRead(dialog.FileName))
-                {
-                    Project = serializer.Deserialize(stream) as Project;
-                }
-            }
-        }
     }
 }

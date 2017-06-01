@@ -50,19 +50,19 @@
             <TextBlock Text="SpriteSheet cell size" Grid.Row="2" />
             <xctk:IntegerUpDown Grid.Column="2" 
                 Minimum="1" 
-                Value="{Binding SheetCellSize.Width}" DefaultValue="{Binding SheetCellSize.Width, Mode=OneTime}" DisplayDefaultValueOnEmptyText="True" Grid.Row="2" />
+                Value="{Binding Project.SheetCellSize.Width}" DefaultValue="{Binding Project.SheetCellSize.Width, Mode=OneTime}" DisplayDefaultValueOnEmptyText="True" Grid.Row="2" />
             <xctk:IntegerUpDown Grid.Column="4" 
                 Minimum="1" 
-                Value="{Binding SheetCellSize.Height}" DefaultValue="{Binding SheetCellSize.Height, Mode=OneTime}"  DisplayDefaultValueOnEmptyText="True" Grid.Row="2" />
+                Value="{Binding Project.SheetCellSize.Height}" DefaultValue="{Binding Project.SheetCellSize.Height, Mode=OneTime}"  DisplayDefaultValueOnEmptyText="True" Grid.Row="2" />
 
             <TextBlock Grid.Row="4" Text="Number of rotations" />
-            <xctk:IntegerUpDown Grid.Row="4" Grid.Column="2" Minimum="1" Value="{Binding Rotations}" />
+            <xctk:IntegerUpDown Grid.Row="4" Grid.Column="2" Minimum="1" Value="{Binding Project.Rotations}" />
 
             <TextBlock Grid.Row="6" Text="SpriteSheet image" />
-            <TextBox Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="3" MaxLines="1" Text="{Binding SheetFilePath}" />
+            <TextBox Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="3" MaxLines="1" Text="{Binding Project.SheetFilePath}" />
 
             <TextBlock Grid.Row="8" Text="Output achx" />
-            <TextBox Grid.Row="8" Grid.Column="2" Grid.ColumnSpan="3" MaxLines="1" Text="{Binding OutputAchxFilePath}" />
+            <TextBox Grid.Row="8" Grid.Column="2" Grid.ColumnSpan="3" MaxLines="1" Text="{Binding Project.OutputAchxFilePath}" />
 
             <TextBlock Grid.Row="10">
                 Add Relative position<LineBreak />
@@ -70,10 +70,10 @@
             </TextBlock>
             <xctk:DoubleUpDown Grid.Row="10" Grid.Column="2" VerticalAlignment="Top"
                                 Minimum="0" 
-                Value="{Binding FramesOffset.X}" DefaultValue="{Binding FramesOffset.X, Mode=OneTime}" DisplayDefaultValueOnEmptyText="True" />
+                Value="{Binding Project.FramesOffset.X}" DefaultValue="{Binding Project.FramesOffset.X, Mode=OneTime}" DisplayDefaultValueOnEmptyText="True" />
             <xctk:DoubleUpDown Grid.Row="10" Grid.Column="4" VerticalAlignment="Top"
                                 Minimum="0" 
-                Value="{Binding FramesOffset.Y}" DefaultValue="{Binding FramesOffset.Y, Mode=OneTime}" DisplayDefaultValueOnEmptyText="True" />
+                Value="{Binding Project.FramesOffset.Y}" DefaultValue="{Binding Project.FramesOffset.Y, Mode=OneTime}" DisplayDefaultValueOnEmptyText="True" />
 
             <Button Grid.Row="11" Grid.ColumnSpan="3" Content="Generate achx" Margin="102,20" Padding="20,6" HorizontalAlignment="Center" 
                     Click="ButGenerate_Click" Grid.RowSpan="2" />
@@ -90,7 +90,7 @@
         <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"
                       Background="{StaticResource PitchGray}" >
 
-            <ItemsControl ItemsSource="{Binding AnimDefinitons}" >
+            <ItemsControl ItemsSource="{Binding Project.AnimDefinitons}" >
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Border Background="{StaticResource BGBlueish}" Margin="2" >
